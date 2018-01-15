@@ -1,10 +1,10 @@
 #!/bin/sh
 
-source /ifs/work/pi/pipelineKickoff/config.sh
 source /ifs/work/pi/lib/bash/b-log.sh
 
 curDir=$(dirname $0)
 
+source $curDir/config.sh
 source $curDir/constants.sh
 source $curDir/notification-config.sh
 source $curDir/log-config.sh
@@ -50,55 +50,54 @@ sendNotification() {
     curl -X POST --data-urlencode "payload={\"channel\": \"${channel}\", \"username\": \"${username}\", \"text\": \"${text}\", \"icon_emoji\": \":kingjulien:\"}" ${webhookUrl}
 }
 
-timeNums=$1
-timeUnits=$2
+generateBicFiles() {
+    timeNums=$1
+    timeUnits=$2
 
-if [ -z "$timeNums" ]; then
-    timeNums=16
-    timeUnits="m"
-fi
+    if [ -z "$timeNums" ]; then
+        timeNums=16
+        timeUnits="m"
+    fi
 
-INFO "Running automated delivery script"
+    INFO "Running automated delivery script"
 
-IDsDone=$($pythonPath $getIdsCmd --recentProjects -t $timeNums -tu $timeUnits)
-restfulERROR=$?
+    IDsDone=$($pythonPath $getIdsCmd --recentProjects -t $timeNums -tu $timeUnits)
+    restfulERROR=$?
 
-if [ $restfulERROR -ne 0 ]; then
-    ERROR "Restful error";
-    INFO "$IDsDone";
-    exit -1
-fi
+    if [ $restfulERROR -ne 0 ]; then
+        ERROR "Restful error";
+        INFO "$IDsDone";
+        exit -1
+    fi
 
-IFS=$'\n' read -rd ',' -a ids <<< "$IDsDone"
-INFO "Delivered projects: ${ids[*]}"
+    IFS=$'\n' read -rd ',' -a ids <<< "$IDsDone"
+    INFO "Delivered projects: ${ids[*]}"
 
-bicCreateManifestJar=${createManifestPath}/pipeline-kickoff-${bicVersion}.jar
-roslinCreateManifestJar=${createManifestPath}/pipeline-kickoff-${roslinVersion}.jar
-INFO "BIC Create Manifest path: ${bicCreateManifestJar}"
-INFO "ROSLIN Create Manifest path: ${roslinCreateManifestJar}"
+    bicCreateManifestJar=${createManifestPath}/pipeline-kickoff-${bicVersion}.jar
+    INFO "BIC Create Manifest path: ${bicCreateManifestJar}"
 
-for id in $IDsDone
-do
-    INFO "BIC Beginning of pipeline pulling for ${id}"
+    for id in $IDsDone
+    do
+        INFO "BIC Beginning of pipeline pulling for ${id}"
 
-    output=$($javaPath -jar ${jvmParams} $bicCreateManifestJar -p ${id} ${manifestArgs})
-    echo "$output" >> $logFile
+        output=$($javaPath -jar ${jvmParams} $bicCreateManifestJar -p ${id} ${manifestArgs})
+        echo "$output" >> $logFile
 
-    sendNotification $bicOutputPath $id "BIC"
+        sendNotification $bicOutputPath $id "BIC"
 
-    INFO "BIC End of pipeline pulling for ${id}"
-    echo "-----------------------------------------------------" >> $logFile
+        INFO "BIC End of pipeline pulling for ${id}"
+        echo "-----------------------------------------------------" >> $logFile
+    done
+}
 
-    INFO "ROSLIN Beginning of pipeline pulling for ${id}"
+generateRoslinFiles() {
+    INFO "Generating files for ROSLIN"
 
-    output=$($javaPath -jar ${jvmParams} $roslinCreateManifestJar -p ${id} ${manifestArgs})
-    echo "$output" >> $logFile
+    $pythonPath $cdir/regeneration/generate.py
+}
 
-    sendNotification $roslinOutputPath $id "ROSLIN"
+generateBicFiles
+generateRoslinFiles
 
-    INFO "ROSLIN End of pipeline pulling for ${id}"
-    echo "-----------------------------------------------------" >> $logFile
-
-done
 
 

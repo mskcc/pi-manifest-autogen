@@ -62,7 +62,7 @@ projects=(
 for project in ${projects[*]}
 do
 	echo "Running Create Manifest for project $project"
-	sh ./runSingleProject.sh $project
+	sh ./runSingleRoslin.sh $project
 done
 
 cd ${curDir}
