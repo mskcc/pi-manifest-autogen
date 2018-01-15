@@ -1,8 +1,8 @@
 #!/bin/bash
 
-source /ifs/work/pi/pipelineKickoff/config.sh
-
 curDir=$(pwd)
+
+source $curDir/config.sh
 
 cd $(dirname $0)
 

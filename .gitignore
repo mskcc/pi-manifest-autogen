@@ -1,6 +1,6 @@
 *.properties
 *config.sh
-Connection*.txt
+Connection.txt
 Connect*
 logs/
 .idea/

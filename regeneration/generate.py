@@ -1,14 +1,13 @@
+import ConfigParser
+import StringIO
 import base64
 import json
-import subprocess
-import urllib2
-
 import logging
-from logging import handlers
+import subprocess
 import sys
-import ConfigParser
+import urllib2
+from logging import handlers
 
-import StringIO
 import generateconfig
 
 dummySection = 'root'
@@ -54,9 +53,9 @@ def invokeQuery(query):
 
 
 def regenerateProjects():
-    query = getProperty('jira.url') + '/rest/api/2/search?jql=project=' + getProperty('jira.roslin.project.name') + \
-            '+AND+status=%22' + getProperty('jira.roslin.fastqs.available.status') + '%22+OR+status=%22' + \
-            getProperty('jira.roslin.input.regeneration.status') + '%22&maxResults=' + str(
+    query = getProperty('jira.url') + '/' + getProperty('jira.rest.path') + '/search?jql=project=' + getProperty('jira.roslin.project.name') + \
+            '+AND+(status=%22' + getProperty('jira.roslin.fastqs.available.status') + '%22+OR+status=%22' + \
+            getProperty('jira.roslin.input.regeneration.status') + '%22)&maxResults=' + str(
         generateconfig.maxNumberOfRequestsReturned)
     projectsToGenerate = invokeQuery(query)
 
