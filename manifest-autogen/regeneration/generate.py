@@ -74,7 +74,6 @@ def regenerateProjects():
 
     for projectId in projectIds:
         regenerate(projectId)
-        break
 
 
 def getProperty(propertyName):
