@@ -77,7 +77,10 @@ generateBicFiles() {
     INFO "Delivered projects: ${ids[*]}"
 
     bicCreateManifestJar=${createManifestPath}/pipeline-kickoff-${bicVersion}.jar
+    roslinCreateManifestJar=${createManifestPath}/pipeline-kickoff-${roslinVersion}.jar
+
     INFO "BIC Create Manifest path: ${bicCreateManifestJar}"
+    INFO "Roslin Create Manifest path: ${roslinCreateManifestJar}"
 
     for id in $IDsDone
     do
@@ -88,6 +91,15 @@ generateBicFiles() {
         sendNotification $bicOutputPath $id "BIC"
 
         INFO "BIC End of pipeline pulling for ${id}"
+        echo "-----------------------------------------------------" >> $logFile
+
+        INFO "ROSLIN Beginning of pipeline pulling for ${id}"
+
+        sh ./runSingleRoslin.sh ${id}
+
+        sendNotification $roslinOutputPath $id "ROSLIN"
+
+        INFO "ROSLIN End of pipeline pulling for ${id}"
         echo "-----------------------------------------------------" >> $logFile
     done
 }
