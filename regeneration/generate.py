@@ -69,7 +69,7 @@ def regenerateProjects():
         projectId = issue['fields']['summary']
         projectIds.append(str(projectId))
 
-    logger.info("Found {0} projects to regenerate: {1}".format(len(projectIds), projectIds))
+    logger.info("Found {0} projects to generate: {1}".format(len(projectIds), projectIds))
 
     for projectId in projectIds:
         regenerate(projectId)

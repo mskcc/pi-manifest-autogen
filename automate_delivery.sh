@@ -54,6 +54,9 @@ generateBicFiles() {
     timeNums=$1
     timeUnits=$2
 
+    INFO "Time nums: $timeNums"
+    INFO "Time units: $timeUnits"
+
     if [ -z "$timeNums" ]; then
         timeNums=16
         timeUnits="m"
@@ -80,8 +83,7 @@ generateBicFiles() {
     do
         INFO "BIC Beginning of pipeline pulling for ${id}"
 
-        output=$($javaPath -jar ${jvmParams} $bicCreateManifestJar -p ${id} ${manifestArgs})
-        echo "$output" >> $logFile
+        sh ./runSingleBic.sh ${id}
 
         sendNotification $bicOutputPath $id "BIC"
 
@@ -96,7 +98,7 @@ generateRoslinFiles() {
     $pythonPath $cdir/regeneration/generate.py
 }
 
-generateBicFiles
+generateBicFiles $1 $2
 generateRoslinFiles
 
 
