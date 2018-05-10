@@ -1,0 +1,33 @@
+Pipelines: 
+Run_Pipeline: 
+PI_E-mail: dogans@mskcc.org
+PI: dogans
+ProjectID: Proj_05886_B
+Data_Analyst_E-mail: na
+Project_Manager_Email: bourquec@mskcc.org
+DeliverTo: NA
+ProjectDesc: The aim of this project is to identify a molecular signature in a cancer gene in SNUCcould help in better characterization of this entity and serve as an objective moleculardiagnostic marker and/or a potential molecular therapeutic target which could be used as anadjunct and/or as the alternative to the current (very aggressive) management of SNUCpatients.
+ProjectTitle: Molecular characterization of sinonasal poorly differentiated / undifferentiated sinonasal carcinomas
+NumberOfSamples: 9
+Project_Manager: Caitlin Bourque
+ProjectName: SD-snuc
+Assay: 
+DesignFile: 
+TumorType: SNUC
+Investigator_E-mail: dogans@mskcc.org
+Investigator: dogans
+SpikeinDesignFile: 
+AssayPath: 
+Investigator_Name: Dogan, Snjezana
+Data_Analyst: na
+Species: Human
+PI_Name: Dogan, Snjezana
+RunNumber: 2
+Reason_for_rerun: User Request
+RunID: JAX_0169_AHV2KTBBXX, PITT_0204_BHTY7CBBXX, PITT_0205_AHV2N3BBXX
+Institution: cmo
+AmplificationTypes: NA
+LibraryTypes: NA
+Strand: NA
+ProjectFolder: /ifs/work/pi/pipelineKickoff/dev/bic/manifests/Proj_05886_B
+DateOfLastUpdate: 2018-05-10
